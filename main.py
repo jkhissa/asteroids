@@ -6,6 +6,9 @@ from constants import *
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from logger import log_state
+from logger import log_event 
+import sys
 
 def main():
   """
@@ -44,12 +47,19 @@ def main():
 
     updatable.update(dt)
 
+    for asteroid in asteroids:
+      if player.collides_with(asteroid):
+        log_event("player_hit")
+        print("Game over!")
+        sys.exit()
+
     for sprite in drawable:
       sprite.draw(screen)
 
     pygame.display.flip()
     # limit the frames to 60 per second
     dt = clock.tick(60) / 1000.0
+    log_state()
 if __name__ == "__main__":
   # This standard Python construct ensures that the main() function is called
   # only when the script is executed directly.
